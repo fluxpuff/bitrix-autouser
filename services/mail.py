@@ -5,10 +5,10 @@ from requests.exceptions import RequestException
 
 def create_email_account(email_local: str, password: str) -> str:
     """Создает почтовый ящик и возвращает полный email"""
-    domain = os.getenv("DOMAINNAME")
-    mail_login = os.getenv("MAIL_ISP_LOGIN")
-    mail_password = os.getenv("MAIL_ISP_PASSWORD")
-    mail_url = os.getenv("MAIL_ISP_MANAGER_URL")
+    domain = get_env("DOMAINNAME")
+    mail_login = get_env("MAIL_ISP_LOGIN")
+    mail_password = get_env("MAIL_ISP_PASSWORD")
+    mail_url = get_env("MAIL_ISP_MANAGER_URL")
     
     if not all([domain, mail_login, mail_password, mail_url]):
         raise EnvironmentError("Не настроены переменные окружения для почтового сервера")

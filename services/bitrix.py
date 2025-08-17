@@ -1,13 +1,14 @@
 import requests
 import re
+import os
 from bs4 import BeautifulSoup
 from core.config import get_env
 
 def create_bitrix_user(fio: str, email: str, password: str, phone: str, position: str, department: str) -> str:
     """Создает пользователя в Bitrix24"""
-    portal_url = os.getenv("BX_PORTAL_URL")
-    admin_login = os.getenv("BX_ADMIN_LOGIN")
-    admin_pass = os.getenv("BX_ADMIN_PASSWORD")
+    portal_url = get_env("BX_PORTAL_URL")
+    admin_login = get_env("BX_ADMIN_LOGIN")
+    admin_pass = get_env("BX_ADMIN_PASSWORD")
     
     if not all([portal_url, admin_login, admin_pass]):
         raise EnvironmentError("Не настроены переменные окружения для Bitrix24")
@@ -75,7 +76,7 @@ def create_bitrix_user(fio: str, email: str, password: str, phone: str, position
             "DATE_ACTIVE_TO": ""
         }],
         "ACTIVE": "Y",
-        "UF_DEPARTMENT[]": [43],    # ID главного отдела
+        "UF_DEPARTMENT[]": [43],
         "WORK_DEPARTMENT": department,
         "WORK_POSITION": position,
         "WORK_PHONE": phone,

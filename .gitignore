@@ -5,3 +5,6 @@ __pycache__/
 .vscode/
 .idea/
 *.pyc
+build/
+dist/
+Bitrix-autouser.spec

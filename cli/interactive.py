@@ -2,6 +2,10 @@ from core.utils import translit_name, generate_password
 from core.config import get_env
 from services import helpdesk, mail, bitrix
 from core.logger import log_account_creation, log_error
+import os
+from datetime import datetime
+import sys
+import string
 
 def get_confirmed_data(fio: str, phone: str, position: str, department: str, email_local: str) -> tuple:
     """Интерактивное подтверждение и редактирование данных"""
@@ -131,7 +135,7 @@ def main_flow():
             print(f"\nПолучение данных заявки #{request_id}...")
             
             # Получаем данные из Helpdesk
-            helpdesk_data = get_helpdesk_data(request_id)
+            helpdesk_data = helpdesk.fetch_helpdesk_data(request_id)
             print("Данные успешно получены из Helpdesk!")
             
             # Генерация начальных значений
@@ -169,13 +173,13 @@ def main_flow():
         # Создание почтового ящика
         print("\nСоздание почтового ящика...")
         email_local_part = data['email'].split('@')[0]
-        email_full = create_mail_account(email_local_part, data['password'])
+        email_full = mail.create_email_account(email_local_part, data['password'])
         data['email'] = email_full
         print(f"Почтовый ящик успешно создан: {email_full}")
         
         # Создание пользователя в Bitrix
         print("\nСоздание пользователя в Bitrix24...")
-        user_id = create_bitrix_user(
+        user_id = bitrix.create_bitrix_user(
             fio=data['fio'],
             email=data['email'],
             password=data['password'],

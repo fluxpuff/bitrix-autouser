@@ -35,8 +35,12 @@ def fetch_helpdesk_data(request_id: str) -> dict:
     fio, position, phone, department = None, None, None, None
     
     for field in data.get('flds', []):
-        if field['name'] == 'ФИО сотрудника':
+        if field['name'] == 'Фамилия':
             fio = field['value']
+        elif field['name'] == 'Имя':
+            fio += f' {field['value']}'
+        elif field['name'] == 'Отчество':
+            fio += f' {field['value']}'
         elif field['name'] == 'Должность':
             position = field['value']
         elif field['name'] == 'Номер телефона':
